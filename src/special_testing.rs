@@ -131,6 +131,17 @@ fn test_strings(array: &[String]) {
         assert!(fxhash.len() <= array.len());
         eprintln!("fxhash direct {:0.2?}", t.elapsed());
     }
+    for _ in 0..LOOP_COUNT {
+        let t = std::time::Instant::now();
+
+        let mut fxhash: rustc_hash::FxHashSet<String> = Default::default();
+        for item in array {
+            fxhash.insert(item.to_string());
+        }
+
+        assert!(fxhash.len() <= array.len());
+        eprintln!("rustc_hash direct {:0.2?}", t.elapsed());
+    }
 }
 
 pub fn urusura() {
