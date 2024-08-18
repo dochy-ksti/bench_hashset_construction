@@ -8,56 +8,63 @@ Basically, if there's no duplication, it takes two times
 construction time when it's created from empty Hashset
 than Vec. If you can accept the cost, you don't need to copy.
 
-string
-indirect 210.16ms
-indirect 190.13ms
-indirect 190.74ms
-direct 423.37ms
-direct 344.71ms
-direct 341.09ms
-copy and indirect 259.39ms
-copy and indirect 263.87ms
-copy and indirect 258.91ms
-copy and direct 415.27ms
-copy and direct 418.81ms
-copy and direct 412.11ms
-copy btree and indirect 831.95ms
-copy btree and indirect 835.48ms
-copy btree and indirect 825.23ms
-
 When the half of the items are duplicated,
 indirect construction(set the capacity of the Hashset the size 
 of the Vec and copy items to the Hashset to prevent reallocation)
 is not so effective, but still better than direct
 construction(create empty Hashset and insert items).
 
+```Rust
+running 1 test
+string
+indirect 145.02ms
+indirect 133.34ms
+indirect 135.08ms
+direct 294.48ms
+direct 328.14ms
+direct 291.43ms
+copy and indirect 132.89ms
+copy and indirect 132.89ms
+copy and indirect 131.00ms
+copy and direct 272.69ms
+copy and direct 300.89ms
+copy and direct 266.57ms
+copy btree and indirect 847.33ms
+copy btree and indirect 834.68ms
+copy btree and indirect 851.92ms
+copy, sort, dedup and indirect 444.50ms
+copy, sort, dedup and indirect 456.60ms
+copy, sort, dedup and indirect 441.08ms
 duplicated string
-indirect 246.51ms
-indirect 241.37ms
-indirect 244.50ms
-direct 270.68ms
-direct 267.45ms
-direct 268.74ms
-copy and indirect 316.07ms
-copy and indirect 312.17ms
-copy and indirect 313.08ms
-copy and direct 338.04ms
-copy and direct 344.18ms
-copy and direct 337.20ms
-copy btree and indirect 687.59ms
-copy btree and indirect 711.10ms
-copy btree and indirect 683.17ms
-
+indirect 191.07ms
+indirect 195.59ms
+indirect 191.42ms
+direct 214.64ms
+direct 216.12ms
+direct 206.55ms
+copy and indirect 199.60ms
+copy and indirect 237.89ms
+copy and indirect 200.16ms
+copy and direct 235.80ms
+copy and direct 236.79ms
+copy and direct 252.44ms
+copy btree and indirect 527.14ms
+copy btree and indirect 557.37ms
+copy btree and indirect 526.00ms
+copy, sort, dedup and indirect 404.99ms
+copy, sort, dedup and indirect 401.06ms
+copy, sort, dedup and indirect 417.89ms
 usize
-indirect 69.10ms
-indirect 72.78ms
-indirect 72.18ms
-direct 102.32ms
-direct 99.43ms
-direct 103.86ms
-copy and indirect 85.73ms
-copy and indirect 85.45ms
-copy and indirect 84.63ms
-copy btree and indirect 164.42ms
-copy btree and indirect 212.72ms
-copy btree and indirect 158.25ms
+indirect 55.54ms
+indirect 43.47ms
+indirect 43.44ms
+direct 78.18ms
+direct 77.52ms
+direct 76.13ms
+copy and indirect 49.52ms
+copy and indirect 48.30ms
+copy and indirect 50.65ms
+copy btree and indirect 118.81ms
+copy btree and indirect 114.46ms
+copy btree and indirect 117.29ms
+```

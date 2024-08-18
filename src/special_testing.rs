@@ -76,7 +76,7 @@ fn test_strings(array: &[String]) {
             array2.push(item.to_string());
         }
         array2.pop();
-        let hashset: HashSet<String> = array2.iter().map(|s| s.to_string()).collect();
+        let hashset: HashSet<String> = array2.into_iter().collect();
 
         assert!(hashset.len() <= array.len());
         eprintln!("copy and indirect {:0.2?}", t.elapsed());
@@ -89,19 +89,36 @@ fn test_strings(array: &[String]) {
             array2.push(item.to_string());
         }
         array2.pop();
-        for item in &array2 {
-            hashset.insert(item.to_string());
+        for item in array2 {
+            hashset.insert(item);
         }
-        assert!(hashset.len() <= array2.len());
+        assert!(hashset.len() <= array.len());
         eprintln!("copy and direct {:0.2?}", t.elapsed());
     }
     for _ in 0..LOOP_COUNT {
         let t = std::time::Instant::now();
-        let mut array2: BTreeSet<String> = array.iter().map(|s| s.to_string()).collect();
+        let mut array2: BTreeSet<String> = BTreeSet::new();
+		for item in array{
+			array2.insert(item.to_string());
+		}
         array2.pop_last();
-        let hashset: HashSet<String> = array2.iter().map(|s| s.to_string()).collect();
-        assert!(hashset.len() <= array2.len());
+        let hashset: HashSet<String> = array2.into_iter().collect();
+        assert!(hashset.len() <= array.len());
         eprintln!("copy btree and indirect {:0.2?}", t.elapsed());
+    }
+	for _ in 0..LOOP_COUNT {
+        let t = std::time::Instant::now();
+        
+        let mut array2: Vec<String> = vec![];
+        for item in array {
+            array2.push(item.to_string());
+        }
+        array2.sort_unstable();
+		array2.dedup();
+		let hashset: HashSet<String> = array2.into_iter().collect();
+        
+        assert!(hashset.len() <= array.len());
+        eprintln!("copy, sort, dedup and indirect {:0.2?}", t.elapsed());
     }
 }
 
@@ -155,4 +172,4 @@ pub fn urusura() {
     }
 }
 
-pub fn urusura2() {}
+
